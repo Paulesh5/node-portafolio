@@ -1,1 +1,16 @@
-a
+# Portafolio
+
+Avances del proyecto portafolio, creación de controladores, creación de rutas y CRUD del portafolio
+
+
+## Authors
+
+- [@Paulesh5](https://www.github.com/Paulesh5)
+
+
+## Capturas
+![Alt text](image.png)
+![Alt text](image-1.png)
+![Alt text](image-2.png)
+![Alt text](image-3.png)
+![Alt text](image-4.png)
