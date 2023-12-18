@@ -31,22 +31,31 @@ const createNewPortafolio = async(req,res)=>{
     // GUARDAR EN LA BDD
     await newPortfolio.save()
     // MOSTRAR EL RESULTADO
-    res.json({newPortfolio})
+    res.redirect('/portafolios')
 }
 
 // METODO PARA ACTUALIZAR EL FORMULARIO
-const renderEditPortafolioForm = (req,res)=>{
-    res.send('Formulario para editar un portafolio')
+const renderEditPortafolioForm =async(req,res)=>{
+    // Consulta del portafolio en BDD con ID
+    const portfolio = await Portfolio.findById(req.params.id).lean()
+    res.render('portafolio/editPortfolio',{portfolio})
 }
 
 // METODO PARA ACTUALIZAR EN LA BDD LO CAPTURADO EN EL FORM
-const updatePortafolio = (req,res)=>{
-    res.send('Editar un portafolio')
+const updatePortafolio = async(req,res)=>{
+    // CAPTURAR LOS DATOS DEL BODY
+    const {title,category,description}= req.body
+    // ACTUALIZAR EL PORTAFOLIO EN BDD
+    await Portfolio.findByIdAndUpdate(req.params.id,{title,category,description})
+    // REDIRECCIONAR
+    res.redirect('/portafolios')
 }
 
 // METODO PARA ELIMINAR EN LA BDD
-const deletePortafolio = (req,res)=>{
-    res.send('Eliminar un nuevo portafolio')
+const deletePortafolio = async(req,res)=>{
+    // Capturar el Id del portafolio
+    await Portfolio.findByIdAndDelete(req.params.id)
+    res.redirect('/portafolios')
 }
 
 

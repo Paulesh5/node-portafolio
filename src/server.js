@@ -3,9 +3,12 @@ const path = require('path');
 // IMPORTAR HANDLEBARS
 const { engine }  = require('express-handlebars')
 const methodOverride = require('method-override');
+const passport = require('passport');
+const session = require('express-session');
 
 // Inicializaciones
 const app = express()
+require('./config/passport')
 
 // Configuraciones 
 // Variables de configuracion
@@ -32,13 +35,31 @@ app.set('view engine','.hbs')
 app.use(express.urlencoded({extended:false}))
 app.use(methodOverride('_method'))
 
+// Configurar la sesion del usuario
+app.use(session({ 
+    secret: 'secret',
+    resave:true,
+    saveUninitialized:true
+}));
+// Inicializar passportjs y session
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 // Variables globales
+
+// Crear una variable blogal
+app.use((req,res,next)=>{
+    res.locals.user = req.user?.name || null// .email para que salga el correo en lugar del nombre
+    next()
+})
 
 // Rutas 
 app.use(require('./routers/index.routes'))
 
 app.use(require('./routers/portafolio.routes'))
+
+app.use(require('./routers/user.routes'))
 
 // Archivos estáticos
 // DEFINIR ARCHIVOS ESTATICOS Y PUBLICOS

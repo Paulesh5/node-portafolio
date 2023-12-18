@@ -8,7 +8,5 @@ const router = Router()
 
 router.get('/',renderIndex)
 
-router.get('/login',renderLogin)
-
 // EXPORTAR LA VARIABLE ROUTER
 module.exports = router
