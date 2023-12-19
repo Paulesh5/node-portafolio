@@ -5,6 +5,7 @@ const { engine }  = require('express-handlebars')
 const methodOverride = require('method-override');
 const passport = require('passport');
 const session = require('express-session');
+const fileUpload = require('express-fileupload')
 
 // Inicializaciones
 const app = express()
@@ -16,6 +17,12 @@ app.set('port',process.env.port || 3000)
 app.set('views',path.join(__dirname, 'views'))
 // ESTABLECER EL PATH DE LA CARPETA VIEWS
 app.set('views',path.join(__dirname, 'views'))
+
+// ESTABLECER LA PARPETA TEMPORAL Y EL DIRECTORIO
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : './uploads'
+}));
 // ESTABLECER LAS CONFIGURACIONES EXTRAS
 app.engine('.hbs',engine({
     //ESTABLECER EL MASTER PAGE

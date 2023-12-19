@@ -2,12 +2,17 @@
 // IMPORTAR EL MODELO
 const Portfolio = require('../models/Portfolio')
 
+// IMPORTAR EL MÉTODO
+const { uploadImage } = require('../config/cloudinary')
+
 
 // METODO PARA LISTAR LOS PORTAFOLIOS
 const renderAllPortafolios = async(req,res)=>{
     // LISTAR TODOS LOS PORTAFOLIOS Y TRANSFORMAR EN OBJETOS
-    const portfolios = await Portfolio.find().lean()
-
+    // ANTIGUA
+    //const portfolios = await Portfolio.find().lean()
+    // NUEVA
+    const portfolios = await Portfolio.find({user:req.user._id}).lean()
     // MANDAR A LA VISTA LOS PORTAFOLIOS
     res.render("portafolio/allPortfolios", {portfolios})
 }
@@ -28,6 +33,12 @@ const createNewPortafolio = async(req,res)=>{
     const {title, category,description} = req.body
     // CREAR UNA NUEVA INSTANCIA
     const newPortfolio = new Portfolio({title,category,description})
+    // ASOCUAR EL PORTAFOLIO CON EL USUARIO
+    newPortfolio.user = req.user._id
+    // VALIDAR SI EXISTE UNA IMAGEN
+    if(!(req.files?.image)) return res.send("Se requiere una imagen")
+    // UTILIZAR EL MÉTODO
+    await uploadImage(req.files.image.tempFilePath)
     // GUARDAR EN LA BDD
     await newPortfolio.save()
     // MOSTRAR EL RESULTADO
@@ -43,6 +54,8 @@ const renderEditPortafolioForm =async(req,res)=>{
 
 // METODO PARA ACTUALIZAR EN LA BDD LO CAPTURADO EN EL FORM
 const updatePortafolio = async(req,res)=>{
+    const portfolio = await Portfolio.findById(req.params.id).lean()
+    if(!(portfolio.user.toString() !== req.user._id.toString())) return res.redirect('/portafolios')
     // CAPTURAR LOS DATOS DEL BODY
     const {title,category,description}= req.body
     // ACTUALIZAR EL PORTAFOLIO EN BDD
