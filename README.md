@@ -1,6 +1,6 @@
 # Portafolio
 
-Avances del proyecto portafolio, creación de controladores, creación de rutas y CRUD del portafolio
+Avances del proyecto portafolio, creación de controladores, creación de rutas, CRUD del portafolio, Cloudinary imágenes
 
 
 ## Authors
