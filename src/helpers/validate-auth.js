@@ -9,6 +9,7 @@ module.exports.isAuthenticated = (req,res,next)=>{
     res.redirect('/user/login')
 }
 
+//  Crear un metodo para validar lo siguiente
 // Redireccionamiento a la vista portafolios si el usuario a inicio sesion
 module.exports.redirectIfAuthenticated = (req, res, next)=>{
     if (req.isAuthenticated()) {
